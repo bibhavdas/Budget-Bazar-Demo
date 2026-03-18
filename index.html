@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budget Bazar | The Barasat Collection</title>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,700;1,400&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        /* CSS Variables for Light/Dark Theme Switching */
+        :root {
+            --primary-dark: #1a1a24;
+            --accent-gold: #c5a880;
+            --text-main: #333333;
+            --text-light: #555555;
+            --bg-paper: #fdfdfc;
+            --card-bg: #ffffff;
+            --border-color: #e5e5e5;
+            --header-bg: rgba(255, 255, 255, 0.98);
+        }
+
+        [data-theme="dark"] {
+            --primary-dark: #f0f0f0;
+            --accent-gold: #d4af37;
+            --text-main: #e0e0e0;
+            --text-light: #aaaaaa;
+            --bg-paper: #121212;
+            --card-bg: #1e1e1e;
+            --border-color: #333333;
+            --header-bg: rgba(18, 18, 18, 0.98);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-main);
+            background-color: var(--bg-paper);
+            transition: background-color 0.3s, color 0.3s;
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, h4, .serif {
+            font-family: 'Merriweather', serif;
+        }
+
+        /* Top Bar */
+        .top-bar {
+            background-color: #111;
+            color: #fff;
+            padding: 0.5rem 5%;
+            font-size: 0.85rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            letter-spacing: 0.5px;
+        }
+
+        .top-bar-links a {
+            color: #fff;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .top-bar-links a:hover {
+            color: var(--accent-gold);
+        }
+
+        .controls button {
+            background: none;
+            border: 1px solid #fff;
+            color: #fff;
+            padding: 2px 10px;
+            cursor: pointer;
+            margin-right: 10px;
+            border-radius: 3px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .controls button:hover {
+            background: #fff;
+            color: #111;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--header-bg);
+            border-bottom: 2px solid var(--primary-dark);
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        .logo-container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-img {
+            height: 60px;
+            object-fit: contain;
+        }
+
+        .logo-sub {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 5px;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+        }
+
+        nav a {
+            margin-left: 2rem;
+            text-decoration: none;
+            color: var(--primary-dark);
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: var(--accent-gold);
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            margin-left: 2rem;
+            color: var(--primary-dark);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.8)), url('https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?auto=format&fit=crop&w=1920&q=80') no-repeat center center/cover;
+            color: white;
+            padding: 6rem 5%;
+            text-align: center;
+            border-bottom: 5px solid var(--accent-gold);
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            font-weight: 300;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            color: #e0e0e0;
+            font-weight: 300;
+        }
+
+        /* Layout */
+        .main-container {
+            max-width: 1400px;
+            margin: 4rem auto;
+            padding: 0 5%;
+            display: grid;
+            grid-template-columns: 3fr 1fr;
+            gap: 4rem;
+        }
+
+        .section-header {
+            font-size: 2.5rem;
+            color: var(--primary-dark);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1rem;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .back-btn {
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            background: none;
+            border: 1px solid var(--primary-dark);
+            color: var(--primary-dark);
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: none;
+        }
+
+        .back-btn:hover {
+            background: var(--primary-dark);
+            color: var(--bg-paper);
+        }
+
+        /* Feature Grid */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease, background-color 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            border-color: var(--accent-gold);
+        }
+
+        .card img {
+            width: 100%;
+            height: 350px;
+            object-fit: contain; 
+            margin-bottom: 1.5rem;
+            background-color: var(--card-bg); 
+            transition: filter 0.3s ease;
+        }
+
+        .card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-dark);
+        }
+
+        .card p {
+            font-size: 0.95rem;
+            color: var(--text-light);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background: var(--card-bg);
+            padding: 2.5rem;
+            border: 1px solid var(--border-color);
+            height: fit-content;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        .sidebar h3 {
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1.5rem;
+            color: var(--primary-dark);
+            border-bottom: 2px solid var(--accent-gold);
+            padding-bottom: 0.5rem;
+            display: inline-block;
+        }
+
+        .index-list {
+            list-style: none;
+        }
+
+        .index-list li {
+            margin-bottom: 0.8rem;
+            border-bottom: 1px dashed var(--border-color);
+            padding-bottom: 0.8rem;
+        }
+
+        .index-list a {
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: 500;
+            display: flex;
+            justify-content: space-between;
+            transition: color 0.2s;
+        }
+
+        .index-list a:hover {
+            color: var(--accent-gold);
+        }
+
+        /* Footer */
+        footer {
+            background-color: #111;
+            color: #d1d1d1;
+            padding: 4rem 5%;
+            font-size: 0.95rem;
+            text-align: center;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 900px) {
+            .main-container {
+                grid-template-columns: 1fr;
+            }
+            .top-bar {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+            .hide-on-mobile {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <div class="controls">
+            <button onclick="toggleLang()" id="langBtn">বাংলা (Bangla)</button>
+        </div>
+        <div class="top-bar-links" style="display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; align-items: center;">
+            <a href="tel:+919331190741">📞 093311 90741</a>
+            <span class="hide-on-mobile">|</span>
+            <a href="mailto:budgetbazarho@gmail.com" class="hide-on-mobile">✉️ budgetbazarho@gmail.com</a>
+            <span class="hide-on-mobile">|</span>
+            <span class="lang hide-on-mobile" data-en="🕒 10:00 AM - 9:30 PM" data-bn="🕒 সকাল ১০:০০ - রাত ৯:৩০">🕒 10:00 AM - 9:30 PM</span>
+        </div>
+    </div>
+
+    <header>
+        <div class="logo-container">
+            <a href="#">
+                <img src="https://raw.githubusercontent.com/bibhavdas/Budget-Bazar-Demo/refs/heads/main/BB%20Logo.png" alt="Budget Bazar Logo" class="logo-img">
+            </a>
+            <span class="logo-sub lang" data-en="The Complete Clothing Store" data-bn="সম্পূর্ণ বস্ত্র বিপণি">The Complete Clothing Store</span>
+        </div>
+        <nav>
+            <a href="#collections" class="lang" data-en="Collections" data-bn="কালেকশন">Collections</a>
+            <a href="#departments" class="lang" data-en="Index" data-bn="সূচি">Index</a>
+            <button class="theme-toggle" onclick="toggleTheme()" id="themeIcon">🌙</button>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1 class="lang" data-en="Style for Every Generation" data-bn="প্রতিটি প্রজন্মের জন্য স্টাইল">Style for Every Generation</h1>
+        <p class="lang" data-en="Discover Barasat's premier destination for high-quality fabrics, contemporary fashion, and ethnic wear—thoughtfully curated under one roof." data-bn="উচ্চমানের পোশাক, সমসাময়িক ফ্যাশন এবং এথনিক ওয়্যার এর জন্য বারাসাতের সেরা গন্তব্য আবিষ্কার করুন—সবকিছু এক ছাদের নিচে।">Discover Barasat's premier destination for high-quality fabrics, contemporary fashion, and ethnic wear—thoughtfully curated under one roof.</p>
+    </section>
+
+    <div class="main-container">
+        <main>
+            <div class="section-header" id="collections">
+                <h2 id="view-title" class="lang" data-en="Featured Departments" data-bn="আমাদের বিভাগসমূহ">Featured Departments</h2>
+                <button class="back-btn lang" id="back-btn" onclick="showCategories()" data-en="← Back to Departments" data-bn="← বিভাগে ফিরে যান">← Back to Departments</button>
+            </div>
+            
+            <div class="feature-grid" id="category-view">
+                <div class="card" onclick="loadProducts('women')">
+                    <img src="https://raw.githubusercontent.com/bibhavdas/Budget-Bazar-Demo/refs/heads/main/women's%20wear.jpg" alt="Women's Ethnic Wear">
+                    <h3 class="lang" data-en="Women's Ethnic" data-bn="মহিলাদের এথনিক">Women's Ethnic</h3>
+                    <p class="lang" data-en="Click to view our exclusive collection of kurtis, pure cotton sarees, and embellished festive sets." data-bn="কুর্তি, পিওর কটন শাড়ি এবং উৎসবের সেটের এক্সক্লুসিভ কালেকশন দেখতে ক্লিক করুন।">Click to view our exclusive collection of kurtis, pure cotton sarees, and embellished festive sets.</p>
+                </div>
+                
+                <div class="card" onclick="loadProducts('men')">
+                    <img src="https://raw.githubusercontent.com/bibhavdas/Budget-Bazar-Demo/refs/heads/main/Men's%20wear.jpg" alt="Men's Apparel">
+                    <h3 class="lang" data-en="Men's Wear" data-bn="পুরুষদের পোশাক">Men's Wear</h3>
+                    <p class="lang" data-en="Click to view our impeccably tailored formal shirts, breathable cotton casuals, and premium denim." data-bn="ফরমাল শার্ট, আরামদায়ক কটন ক্যাজুয়াল এবং প্রিমিয়াম ডেনিম দেখতে ক্লিক করুন।">Click to view our impeccably tailored formal shirts, breathable cotton casuals, and premium denim.</p>
+                </div>
+
+                <div class="card" onclick="loadProducts('kids')">
+                    <img src="https://raw.githubusercontent.com/bibhavdas/Budget-Bazar-Demo/refs/heads/main/kid's%20wear.jpg" alt="Kids Collection">
+                    <h3 class="lang" data-en="Kids & Infants" data-bn="বাচ্চাদের পোশাক">Kids & Infants</h3>
+                    <p class="lang" data-en="Click to view durable, vibrant, and skin-friendly fabrics designed for children of all ages." data-bn="সব বয়সের শিশুদের জন্য টেকসই, উজ্জ্বল এবং আরামদায়ক পোশাক দেখতে ক্লিক করুন।">Click to view durable, vibrant, and skin-friendly fabrics designed for children of all ages.</p>
+                </div>
+            </div>
+
+            <div class="feature-grid" id="product-view" style="display: none;"></div>
+        </main>
+
+        <aside class="sidebar" id="departments">
+            <h3 class="lang" data-en="Clothing Index" data-bn="পোশাকের সূচি">Clothing Index</h3>
+            <ul class="index-list">
+                <li><a href="#"><span class="lang" data-en="Accessories & Belts" data-bn="আনুষাঙ্গিক ও বেল্ট">Accessories & Belts</span> <span>→</span></a></li>
+                <li><a href="#"><span class="lang" data-en="Casual T-Shirts" data-bn="ক্যাজুয়াল টি-শার্ট">Casual T-Shirts</span> <span>→</span></a></li>
+                <li><a href="#"><span class="lang" data-en="Denim & Jeans" data-bn="ডেনিম ও জিন্স">Denim & Jeans</span> <span>→</span></a></li>
+                <li><a href="#"><span class="lang" data-en="Festive Wear" data-bn="উৎসবের পোশাক">Festive Wear</span> <span>→</span></a></li>
+                <li><a href="#"><span class="lang" data-en="Formal Suiting" data-bn="ফরমাল স্যুটিং">Formal Suiting</span> <span>→</span></a></li>
+                <li><a href="#"><span class="lang" data-en="Infant Wear" data-bn="শিশুদের পোশাক">Infant Wear</span> <span>→</span></a></li>
+                <li><a href="#"><span class="lang" data-en="Kurtis & Tunics" data-bn="কুর্তি ও টিউনিক">Kurtis & Tunics</span> <span>→</span></a></li>
+                <li><a href="#"><span class="lang" data-en="Sarees & Silk" data-bn="শাড়ি ও সিল্ক">Sarees & Silk</span> <span>→</span></a></li>
+            </ul>
+        </aside>
+    </div>
+
+    <footer>
+        <img src="https://raw.githubusercontent.com/bibhavdas/Budget-Bazar-Demo/refs/heads/main/BB%20Logo.png" alt="Budget Bazar Logo" style="height: 55px; filter: brightness(0) invert(1); margin-bottom: 25px;">
+        
+        <div style="margin-bottom: 25px; line-height: 1.8;">
+            <p>
+                <span class="lang" data-en="📍 Address:" data-bn="📍 ঠিকানা:">📍 Address:</span> 
+                <span class="lang" data-en="KNC Road, Haritala More, Barasat, Kolkata, West Bengal 700124" data-bn="কেএনসি রোড, হরিতলা মোড়, বারাসাত, কলকাতা, পশ্চিমবঙ্গ ৭০০১২৪">KNC Road, Haritala More, Barasat, Kolkata, West Bengal 700124</span>
+            </p>
+            <p>
+                <span class="lang" data-en="📞 Mobile:" data-bn="📞 মোবাইল:">📞 Mobile:</span> 
+                <a href="tel:+919331190741" style="color: var(--accent-gold); text-decoration: none; font-weight: 600; letter-spacing: 1px;">093311 90741</a>
+            </p>
+            <p>
+                <span class="lang" data-en="✉️ Email:" data-bn="✉️ ইমেইল:">✉️ Email:</span> 
+                <a href="mailto:budgetbazarho@gmail.com" style="color: var(--accent-gold); text-decoration: none; font-weight: 600;">budgetbazarho@gmail.com</a>
+            </p>
+        </div>
+
+        <p style="color: #666; font-size: 0.85rem; border-top: 1px solid #333; padding-top: 15px; max-width: 400px; margin: 0 auto;">
+            &copy; 2026 Budget Bazar. <span class="lang" data-en="All rights reserved." data-bn="সর্বস্বত্ব সংরক্ষিত।">All rights reserved.</span>
+        </p>
+    </footer>
+
+    <script>
+        // 1. Dark Mode Logic
+        function toggleTheme() {
+            const body = document.documentElement;
+            const icon = document.getElementById('themeIcon');
+            if (body.getAttribute('data-theme') === 'dark') {
+                body.removeAttribute('data-theme');
+                icon.innerText = '🌙';
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                icon.innerText = '☀️';
+            }
+        }
+
+        // 2. Language Switcher Logic
+        let currentLang = 'en';
+        function toggleLang() {
+            currentLang = currentLang === 'en' ? 'bn' : 'en';
+            document.getElementById('langBtn').innerText = currentLang === 'en' ? 'বাংলা (Bangla)' : 'English';
+            
+            document.querySelectorAll('.lang').forEach(el => {
+                el.innerText = el.getAttribute(`data-${currentLang}`);
+            });
+        }
+
+        // 3. Demo Product Loading Logic
+        const productData = {
+            women: [
+                { nameEn: "Printed Kurti", nameBn: "প্রিন্টেড কুর্তি", price: "₹499", img: "https://images.unsplash.com/photo-1583391733958-650fac5ef369?auto=format&fit=crop&w=400&q=80" },
+                { nameEn: "Silk Saree", nameBn: "সিল্ক শাড়ি", price: "₹1,299", img: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=400&q=80" }
+            ],
+            men: [
+                { nameEn: "White Formal Shirt", nameBn: "সাদা ফরমাল শার্ট", price: "₹599", img: "https://images.unsplash.com/photo-1598033129183-c4f50c736f10?auto=format&fit=crop&w=400&q=80" },
+                { nameEn: "Blue Denim", nameBn: "নীল ডেনিম", price: "₹899", img: "https://images.unsplash.com/photo-1542272604-787c3835535d?auto=format&fit=crop&w=400&q=80" }
+            ],
+            kids: [
+                { nameEn: "Boys T-Shirt", nameBn: "ছেলেদের টি-শার্ট", price: "₹299", img: "https://images.unsplash.com/photo-1519241047957-be31d7379a5d?auto=format&fit=crop&w=400&q=80" },
+                { nameEn: "Girls Dress", nameBn: "মেয়েদের পোশাক", price: "₹799", img: "https://images.unsplash.com/photo-1622290291468-a28f7a7dc6a8?auto=format&fit=crop&w=400&q=80" }
+            ]
+        };
+
+        const titlesEn = { women: "Women's Collection", men: "Men's Collection", kids: "Kids & Infants" };
+        const titlesBn = { women: "মহিলাদের কালেকশন", men: "পুরুষদের কালেকশন", kids: "বাচ্চাদের কালেকশন" };
+
+        function loadProducts(category) {
+            document.getElementById('category-view').style.display = 'none';
+            document.getElementById('product-view').style.display = 'grid';
+            document.getElementById('back-btn').style.display = 'block';
+
+            const titleEl = document.getElementById('view-title');
+            titleEl.setAttribute('data-en', titlesEn[category]);
+            titleEl.setAttribute('data-bn', titlesBn[category]);
+            titleEl.innerText = currentLang === 'en' ? titlesEn[category] : titlesBn[category];
+
+            let productsHTML = '';
+            productData[category].forEach(product => {
+                productsHTML += `
+                    <div class="card" style="cursor: default;">
+                        <img src="${product.img}" alt="Clothes">
+                        <h3 style="font-size: 1.2rem;" class="lang" data-en="${product.nameEn}" data-bn="${product.nameBn}">${currentLang === 'en' ? product.nameEn : product.nameBn}</h3>
+                        <span style="font-weight: 600; color: var(--accent-gold);">${product.price}</span>
+                    </div>
+                `;
+            });
+
+            document.getElementById('product-view').innerHTML = productsHTML;
+            document.getElementById('collections').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function showCategories() {
+            document.getElementById('product-view').style.display = 'none';
+            document.getElementById('category-view').style.display = 'grid';
+            document.getElementById('back-btn').style.display = 'none';
+            
+            const titleEl = document.getElementById('view-title');
+            titleEl.setAttribute('data-en', 'Featured Departments');
+            titleEl.setAttribute('data-bn', 'আমাদের বিভাগসমূহ');
+            titleEl.innerText = currentLang === 'en' ? 'Featured Departments' : 'আমাদের বিভাগসমূহ';
+        }
+    </script>
+</body>
+</html>
